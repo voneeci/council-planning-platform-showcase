@@ -1,0 +1,15 @@
+flowchart LR
+    A[Excel templates<br/>filled in by council staff] --> B[Python pipeline<br/>check, flag, save]
+    B --> C
+    subgraph C [Microsoft SQL Server]
+        D[Recorded figures and<br/>published reference rates]
+        E[Calculation layer<br/>one view per derived metric]
+        F[Stored snapshots<br/>rebuilt after each update]
+        D --> E --> F
+    end
+    F --> G[Grafana dashboards<br/>read-only login]
+    M[Flyway<br/>numbered migrations] --> C
+    T[pytest<br/>730 automated tests] -.checks.-> C
+    T -.checks.-> G
+    C --> X[Read-only MCP server]
+    X --> Y[AI agents<br/>Claude]
