@@ -1,6 +1,6 @@
 # Council Planning Platform
 
-A sustainability data model, calculation engine and dashboard suite for local councils (municipalities). It helps them report emissions and plan the move to electric fleets and buildings. I design, build and maintain it as a commercial product.
+A planning data model, calculation engine and dashboard suite for local councils (municipalities). It helps them report emissions and plan the move to electric fleets and buildings. I design, build and maintain it as a commercial product.
 
 > **About this repository.** This is a public showcase. The platform's source code is private and commercial, so this repository holds screenshots, the architecture, design decisions and a few sample files. Every figure shown belongs to **East Coast Council, a fictional demonstration council** built from published Australian benchmarks. None of it is a real council's data.
 
