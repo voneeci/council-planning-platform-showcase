@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box}body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#1d2329}
+.wrap{width:1500px;padding:36px 40px 40px}
+h1{font-size:30px;margin:0 0 6px}.sub{color:#5b6670;font-size:16px;margin:0 0 26px}
+.grid{display:grid;grid-template-columns:1fr 210px;gap:18px}
+.rows{display:flex;flex-direction:column;gap:0}
+.row{display:grid;grid-template-columns:230px 1fr;border:1.5px solid #2f6f5e;border-radius:12px;background:#f4f8f6;overflow:hidden}
+.lab{background:#2f6f5e;color:#fff;padding:16px 18px;display:flex;flex-direction:column;justify-content:center}
+.lab .n{font-size:13px;opacity:.85;letter-spacing:.08em;text-transform:uppercase}.lab .t{font-size:20px;font-weight:700;margin-top:4px}
+.chips{display:flex;flex-wrap:nowrap;gap:10px;padding:14px;align-items:stretch}
+.chip{background:#fff;border:1px solid #c9dcd4;border-radius:8px;padding:10px 12px;font-size:15px;line-height:1.35;flex:1 1 0;min-width:0}
+.arrow{height:26px;display:flex;justify-content:center;align-items:center;color:#2f6f5e;font-size:22px;padding-left:230px}
+.outwrap{display:flex;justify-content:center;padding-left:230px}.out{background:#2f6f5e;color:#fff;border-radius:999px;padding:10px 26px;font-weight:700;font-size:17px}
+.side{border:1.5px solid #b5762b;background:#fff6dc;border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px}
+.side h2{font-size:18px;margin:0;color:#7a4e14}.side .big{font-size:40px;font-weight:700;color:#7a4e14;line-height:1}
+.side p{margin:0;font-size:14.5px;line-height:1.4}
+.ai{margin-top:18px;border:1.5px solid #7a5a9e;background:#f6f2fa;border-radius:12px;display:grid;grid-template-columns:230px 1fr}
+.ai .lab{background:#7a5a9e}
+.ai .chip{border-color:#ddd0ea}
+.term{display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:#2f6f5e;text-transform:uppercase;letter-spacing:.04em}
+.ai .term{color:#7a5a9e}
+.side ol{margin:0;padding-left:20px;font-size:14px;line-height:1.45}
+.foot{margin-top:16px;color:#5b6670;font-size:13.5px}
+</style></head><body><div class="wrap">
+<h1>Testing and guardrails, layer by layer</h1>
+<p class="sub">Council Planning Platform. Every figure is checked on the way in, while it is calculated, and before any package reaches a council.</p>
+<div class="grid"><div>
+<div class="rows">
+<div class="row"><div class="lab"><span class="n">Layer 1</span><span class="t">Data coming in</span></div><div class="chips">
+<div class="chip">Guided Excel template with locked cells and gap checks<span class="term">Pipeline unit tests</span></div>
+<div class="chip">Uploads land in a holding area and every row is checked<span class="term">ETL validation</span></div>
+<div class="chip">Flagged rows wait for a person to approve them<span class="term">Human in the loop</span></div>
+<div class="chip">No calculation fills a gap. A missing figure is reported, never estimated</div></div></div>
+<div class="arrow">&#9660;</div>
+<div class="row"><div class="lab"><span class="n">Layer 2</span><span class="t">Reference sources</span></div><div class="chips">
+<div class="chip">Every emissions factor has a working link, a full citation and one edition per year<span class="term">Reference data quality tests</span></div>
+<div class="chip">A new state's factors are confirmed by a person before any package can carry them</div></div></div>
+<div class="arrow">&#9660;</div>
+<div class="row"><div class="lab"><span class="n">Layer 3</span><span class="t">Database</span></div><div class="chips">
+<div class="chip">Tested migrations, never edited once applied<span class="term">Migration tests</span></div>
+<div class="chip">Each change proves no figure moved when it shouldn't<span class="term">Regression and drift tests</span></div>
+<div class="chip">Separate logins for building, loading and read-only dashboards<span class="term">Least privilege</span></div>
+<div class="chip">Credentials in one local file, never committed<span class="term">Secret leakage checks</span></div></div></div>
+<div class="arrow">&#9660;</div>
+<div class="row"><div class="lab"><span class="n">Layer 4</span><span class="t">Calculations and dashboards</span></div><div class="chips">
+<div class="chip">Calculations checked against hand-worked figures<span class="term">Unit and golden tests</span></div>
+<div class="chip">A trace test fails if any chart figure can't be traced to its inputs and a published source<span class="term">Data lineage tests</span></div>
+<div class="chip">Dashboard tests for the shared look, colour contrast and stored figures matching their calculations<span class="term">Accessibility and snapshot tests</span></div></div></div>
+<div class="arrow">&#9660;</div>
+<div class="row"><div class="lab"><span class="n">Layer 5</span><span class="t">Release</span></div><div class="chips">
+<div class="chip">Release check installs into a fresh database and proves the schema and data match<span class="term">Release acceptance test</span></div>
+<div class="chip">Upgrades an older install, runs the backup and loads the demonstration council<span class="term">Upgrade, backup and smoke tests</span></div>
+<div class="chip">Two rehearsal rollouts, following the guides as a council's IT team would (38 findings, all fixed)<span class="term">UAT dress rehearsal</span></div></div></div>
+<div class="arrow">&#9660;</div>
+<div class="outwrap"><div class="out">Council package</div></div>
+</div>
+<div class="ai"><div class="lab"><span class="n">Across every layer</span><span class="t">AI agents that build it</span></div><div class="chips">
+<div class="chip">Written rules and permission limits for each agent</div>
+<div class="chip">A read-only connector, so agents can look up figures but never change them<span class="term">Least privilege</span></div>
+<div class="chip">An independent agent runs code, dependency and security checks<span class="term">Static analysis, SCA, secret scanning</span></div>
+<div class="chip">Human sign-off on everything that ships<span class="term">Human in the loop</span></div></div></div>
+</div>
+<div class="side"><h2>Automated tests</h2><div class="big">730</div>
+<p>tests in ten layers, as at 26 October 2026</p>
+<ol><li>Schema</li><li>Unit, with golden values</li><li>Reference data quality</li><li>Pipeline</li><li>End-to-end</li><li>Regression and drift</li><li>Migration</li><li>Contract</li><li>Snapshot consistency</li><li>Data migration</li></ol>
+<p>The affected tests run after every change. The full suite runs before every database migration, annual data load and client handover.</p>
+<p>Every database test runs in its own transaction and rolls back, so testing never changes live figures.</p>
+<p>Each run is recorded with its reason and evidence.</p>
+<p>Transactional test isolation and test markers keep installation, demonstration and development checks apart.</p>
+<p><strong>Test stack</strong><br>Python 3.14, pytest 9.1, pyodbc and SQL Server 2025, with Node.js, Flyway and headless Edge.</p>
+<p><strong>Independent checks</strong><br>Ruff, Bandit, Vulture, SQLFluff, ESLint, the TypeScript checker, pip-audit and Gitleaks.</p></div>
+</div>
+<p class="foot">All figures in this repository belong to East Coast Council, a fictional demonstration council.</p>
+</div></body></html>

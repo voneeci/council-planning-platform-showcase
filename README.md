@@ -70,6 +70,47 @@ The full list, with versions, is in [STACK.md](STACK.md).
 - **Every figure is traceable.** A test fails if any chart's figure can't be traced back to its inputs and published sources. See [test_trace.py](samples/tests/test_trace.py).
 - **Fast, measured dashboards.** Moving dashboards onto stored snapshots cut the slowest dashboard's cold load from 45.5 seconds to under 1.2 seconds. See [decision 0007](docs/decisions/0007-dashboards-read-stored-snapshots.md).
 
+### Testing and guardrails, layer by layer
+
+![Testing and guardrails in five layers, from data coming in to release, with 730 automated tests alongside and guardrails for the AI agents across every layer](docs/testing-and-guardrails.png)
+
+Every figure is checked on the way in, while it is calculated, and before any package reaches a council. The diagram's source is [testing-and-guardrails-source.html](docs/testing-and-guardrails-source.html).
+
+The suite shares one stack: Python 3.14.7, pytest 9.1.1, pyodbc 5.3.0 with ODBC Driver 18, and Microsoft SQL Server 2025 Developer. It is built in ten layers:
+
+| Layer | Industry term | Tools |
+|---|---|---|
+| 1 | Schema tests (database constraints and structure) | pytest, pyodbc, SQL Server |
+| 2 | Unit tests of the calculation engine, with golden values checked against hand-worked figures | pytest, pyodbc, SQL Server |
+| 3 | Data quality tests on reference data (dbt-style singular tests) | pytest, pyodbc, SQL Server |
+| 4 | Pipeline unit tests (extract, transform and load validation) | pytest, openpyxl 3.1.5 |
+| 5 | End-to-end tests | pytest, openpyxl, pyodbc, SQL Server |
+| 6 | Regression and drift tests | pytest, openpyxl, requests and the Grafana 13.2.4 API |
+| 7 | Migration tests, a from-scratch rebuild and an upgrade from the previous version | pytest, Flyway 13.5.0, pyodbc, a throwaway SQL Server database |
+| 8 | Contract tests, so products read the base platform only through its shared interface | pytest, Flyway, openpyxl, pyodbc, SQL Server |
+| 9 | Snapshot consistency tests, each stored dashboard figure matches its live calculation | pytest, pyodbc, SQL Server, Node.js 24.22.1 running the chart code |
+| 10 | Data migration tests for the new-council onboarding tools | pytest, openpyxl |
+
+Checks around the suite:
+
+| Industry term | Tools | Scope |
+|---|---|---|
+| Data lineage and traceability tests | pytest, pyodbc, SQL Server | Every chart figure |
+| Accessibility (WCAG contrast) and style lint tests | pytest, with each contrast ratio worked out in Python | Every dashboard |
+| Installation and packaging tests | pytest, Flyway, sqlcmd | The installer and setup wizard |
+| Search page tests | pytest, Node.js, headless Microsoft Edge | The research search page |
+| Transactional test isolation | pytest fixtures, pyodbc | Every database test rolls back |
+| Release acceptance test (fresh install, compare, upgrade, backup, smoke tests) | Python, Inno Setup 7.1, Flyway, sqlcmd, SQL Server, pytest, openpyxl | Every package before it ships |
+| User acceptance test rehearsal | SQL Server 2022 Express, Flyway, Grafana, the package installer, a fictional council | Two full rollouts, 38 findings, all fixed |
+| Static analysis of Python (lint and SAST) | Ruff 0.17.0, Bandit 1.9.4, Vulture 2.16 | 207 Python files |
+| Static analysis of SQL | SQLFluff 4.4.0 (T-SQL), Microsoft's SQL code analysis on a SqlPackage 170.2.70 extract | 516 migration files and the database structure |
+| Static analysis of chart code | ESLint 10.12.0, TypeScript 7.0.2 checker in JavaScript mode | 218 charts across 15 dashboards |
+| Dependency vulnerability scanning (SCA) | pip-audit 2.10.1 | The installer's Python packages |
+| Secret scanning | Gitleaks 8.30.1 | The full git history (742 commits) |
+| Secret leakage checks | Python | The release package and saved test evidence |
+
+Static analysis and scanning figures are from the independent code check of 25 October 2026.
+
 ## Design decisions
 
 Key choices are written up as architecture decision records:

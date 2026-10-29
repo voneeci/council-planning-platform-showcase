@@ -43,9 +43,18 @@ The Council Planning Platform's full technology stack, as at October 2026.
 
 ## Testing
 
-- pytest 9
+- pytest 9.1.1, with pyodbc 5.3.0 and ODBC Driver 18 against Microsoft SQL Server 2025 Developer
 - Headless Microsoft Edge for browser checks
-- Node.js scripts
+- Node.js 24.22.1 scripts, including running the chart code on stored rows
+- Inno Setup 7.1, Flyway and sqlcmd for the release acceptance test
+
+## Code quality and security checks
+
+- Ruff 0.17.0, Bandit 1.9.4 and Vulture 2.16 for Python
+- SQLFluff 4.4.0 (T-SQL) and Microsoft's SQL code analysis on a SqlPackage 170.2.70 extract
+- ESLint 10.12.0 and the TypeScript 7.0.2 checker for chart code
+- pip-audit 2.10.1 for dependency vulnerability scanning
+- Gitleaks 8.30.1 for secret scanning
 
 ## Video creation and editing
 
