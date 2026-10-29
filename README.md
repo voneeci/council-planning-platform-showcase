@@ -125,7 +125,7 @@ The platform is built with AI-assisted development, under clear rules:
 
 - **Claude Code agents with narrow roles.** One agent builds; a separate agent runs static analysis and can only report what it finds.
 - **Written rules and guardrails.** Each agent works from a rules file, and a shared lock means only one database job runs at a time.
-- **A read-only MCP server.** AI agents can look up metrics, formulas and sources in the database, but can never change them.
+- **A read-only MCP server.** AI agents can look up metrics, formulas and sources in the database, but can never change them without approval.
 - **A person signs off.** Fixes reach a release only after the tests pass and I've approved them.
 - **Every change is a Git commit,** so the history of each build is clear and reversible.
 
